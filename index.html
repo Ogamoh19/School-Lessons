@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-              <a class="navbar-brand"><strong>School Lessons</strong></a>
+              <a class="navbar-brand"><strong>{{title}}</strong></a>
               <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-dark" type="submit">Search</button>
@@ -31,11 +31,35 @@
               <h1 class="display-5 fw-bold text-white">Modale Academy</h1>
               <div class="col-lg-6 mx-auto">
                 <p class="fs-5 mb-4">After school programs provide opportunities for students outside of the classroom
-                  An after school program isn’t just advantageous for children; for some, they’re crucial.
-                  They improve homework completion, encourage good behavior in the classroom.
+                  An after school program isn’t just advantageous for children for some, they’re crucial.
+                  
                 </p>
               </div>
             </div>
+            <!--<ul class="list-group">
+              <p class="display-6 fw-bold text-white">Sort By</p>
+
+              <li class="list-group-item">
+               <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                Subject
+              </li>
+
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                Location
+              </li>
+
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                Availability
+              </li>
+
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                Price
+              </li>
+
+            </ul>-->
           </div>
         
           <div class="b-example-divider mb-0"></div>
@@ -43,11 +67,11 @@
 </header>
   
     <body>
-      <div v-if="showSubject">
-      <div v-for="subject in subjects">
-        <div style="padding: 15px;">
+      <div v-if="showSubject"> 
+      <div v-for="subject in subjects" style="display: inline-block;">
+        <div class="above">
         <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem;padding: 15px;" >
-        <img  v-bind:src="subject.image" class="card-img-top" style="width:70%; padding-left: 5px;" alt="...">
+        <img  v-bind:src="subject.image" class="card-img-top" style="width:150px; height: 150px; padding-left: 5px;" alt="...">
         <div class="card-body">
         <p class="card-text"><strong>Name: {{subject.name}}</strong></p>
         <p class="card-text"><strong>Location: {{subject.location}}</strong</p>
@@ -60,11 +84,11 @@
         </div>
         </div>
       </div>  
-    </div>
+     </div>
 
-     <div v-else>
-
-      </div>
+      <div v-else>
+        <checkout/>
+      </div> 
   </div>
 
   <script src="https://unpkg.com/vue@3"></script>
@@ -73,6 +97,7 @@
     let app = Vue.createApp ({
         data(){
           return{
+            title: "School Lessons",
             subjects: subjects,
             cart: [],
             showSubject: true
@@ -114,8 +139,78 @@
                      
                 },
                 
-                }
+                // sortedSubjects(){
+                //   let subjectsArray = this.subjects.slice(0);
+                //   function compare(a, b) {
+                //     if(a.price > b.price)
+                //       return 1;
+                //     if(a.price < b.price)
+                //       return -1;
+                //     return 0;
+                //   }
+                //   return subjectsArray.sort(compare);
+                // }
+             }
         
+    })
+
+    app.component('checkout', {
+      template: `
+
+      <div class="container">
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"><strong>First Name</strong></label>
+        <input v-on:keyup="isEmpty" v-model.trim="order.firstName" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Anon">
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"><strong>Last Name</strong></label>
+        <input v-on:Keyup="isEmpty" v-model.trim="order.lastName" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Anon">
+      </div>
+      
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"><strong>Phone Number</strong></label>
+        <input v-on:keyup="isEmpty" v-model.number="order.phone" type="tel" class="form-control" id="exampleFormControlInput1" placeholder="+234">
+      </div>
+      </div>
+
+      <div class="container">
+      <div class="card">
+      <div class="card-header">
+         Order Information
+      </div>
+      <div class="card-body">
+       <p class="card-text">First Name: {{order.firstName}}</p>
+       <p class="card-text">Last Name: {{order.lastName}}</p>
+       <p class="card-text">Phone Number: {{order.phone}}</p>
+       <button disabled class="btn btn-dark" id="btn" v-on:click="submitForm">Place Order</button>
+      </div>
+      </div>
+      </div>
+      `,
+
+      data(){
+        return{
+          order:{
+            firstName: '',
+            lastName: '',
+            phone: ''
+          }
+
+        }
+      },
+
+      methods:{
+        submitForm(){
+          alert('Order Sucessful')
+        },
+
+        isEmpty(){
+          if(this.order.firstName != "" && this.order.lastName != "" && this.order.phone !=  ""){
+            document.getElementById('btn').removeAttribute('disabled');
+          }
+        }
+      }
     })
     app.mount('#app')
 

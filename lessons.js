@@ -1,5 +1,5 @@
 let subjects = [
-    {"id": 1, "image": "img/Math.svg", "name": "Mathematics", "location": "London", "price": {"GBP": 150}, "spaces": 5},
+    {"id": 1, "image": "./img/Math.svg", "name": "Mathematics", "location": "London", "price": {"GBP": 150}, "spaces": 5},
     {"id": 2, "image": "./img/English.svg", "name": "English", "location": "Manchester", "price": {"GBP": 170}, "spaces": 5},
     {"id": 3, "image": "./img/Biology.svg", "name": "Biology", "location": "Northinham", "price": {"GBP": 200}, "spaces": 5},
     {"id": 4, "image": "./img/Economics.svg", "name": "Economics", "location": "Birmingham", "price": {"GBP": 140}, "spaces": 5},
