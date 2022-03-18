@@ -49,23 +49,34 @@
               <p class="display-6 fw-bold text-white">Sort By</p>
 
               <li class="list-group-item">
-               <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                Subject
+               <input class="form-check-input me-1" v-on:click="sortedSubject(subjects.name)" type="checkbox" value="" aria-label="...">
+                <strong>Subject</strong>
               </li>
 
               <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                Location
+                <input class="form-check-input me-1" v-on:click="sortedLocation(subjects.location)" type="checkbox" value="" aria-label="...">
+                <strong>Location</strong>
               </li>
 
               <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                Availability
+                <input class="form-check-input me-1" v-on:click="sortedAvailable(subjects.spaces)" type="checkbox" value="" aria-label="...">
+                <strong>Availability</strong>
               </li>
 
               <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                Price
+                <input class="form-check-input me-1" v-on:click="sortedPrice(subjects.price)" type="checkbox" value="" aria-label="...">
+                <strong>Price</strong>
+              </li>
+              <br>
+
+              <li class="list-group-item">
+                <input class="form-check-input me-1" v-on:click="sortedAscen(subjects.name)" type="checkbox" value="" aria-label="...">
+                <strong>Ascending</strong>
+              </li>
+
+              <li class="list-group-item">
+                <input class="form-check-input me-1" v-on:click="sortedDecen(subjects.name)" type="checkbox" value="" aria-label="...">
+                <strong>Decending</strong>
               </li>
 
             </ul>
@@ -214,7 +225,74 @@
 
         removeItem(subject){
           this.cart.splice(this.cart.indexOf(subject));
+        },
+
+        sortedSubject(){
+          function compare(a, b) {
+            if(a.name > b.name)
+              return 1;
+            else{
+              return -1;
+            }
+          }
+          return this.subjects.sort(compare);
+        },
+
+        sortedLocation(){
+          function compare(a, b) {
+            if(a.location > b.location)
+              return 1;
+            else{
+              return -1;
+            }  
+          }
+          return this.subjects.sort(compare);
+        },
+
+        sortedAvailable(){
+          function compare(a, b){
+            if(a.spaces > b.spaces)
+              return 1;
+            else{
+              return -1;
+            }
+          }
+          return this.subjects.sort(compare);
+        },
+
+        sortedPrice(){
+          function compare(a, b){
+            if(a.price.GBP > b.price.GBP)
+              return 1;
+            if(a.price.GBP < b.price.GBP)
+              return -1;
+            return 0;
+          }
+          return this.subjects.sort(compare);
+        },
+
+        sortedAscen(){
+          function compare(a, b){
+            if(a.name > b.name)
+              return 1;
+            else{
+              return -1;
+            }
+          }
+          return this.subjects.sort(compare);
+        },
+
+        sortedDecen(){
+          function compare(a, b){
+            if(a.name < b.name)
+              return 1;
+            else{
+              return -1;
+            }
+          }
+          return this.subjects.sort(compare);
         }
+
         
         },
 
@@ -224,17 +302,7 @@
                      
                 }, 
                 
-                // sortedSubjects(){
-                //   let subjectsArray = this.subjects.slice(0);
-                //   function compare(a, b) {
-                //     if(a.price > b.price)
-                //       return 1;
-                //     if(a.price < b.price)
-                //       return -1;
-                //     return 0;
-                //   }
-                //   return subjectsArray.sort(compare);
-                // }
+
              }
 
             })
