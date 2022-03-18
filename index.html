@@ -115,21 +115,23 @@
             <th scope="col">Price</th>
             <th scope="col">Remove</th>
           </tr>
-        </thead>
-        <tbody>
-        
-          <tr v-for="(subject, i) in cart" :key="i">
-            <td></td>
-            <td></td>
-            <td></td>
+          </thead>
+      
+          <tbody>
+          <tr v-for="subject in checkCart" v-show="displayCart">
+            <td>{{subject.name}}</td>
+            <td>{{subject.location}}</td>
+            <td>£{{subject.price.GBP}}</td>
             <td><button class="btn btn-dark cart-remove" v-on:click="removeItem">
                       &times;
                     </button></td>
           </tr>
-        </tbody>
+          </tbody>
 
-      </table>
-      </div>
+          </table>
+          </div>
+
+     
 
       <div class="container">
       <div class="mb-3">
@@ -174,8 +176,10 @@
             title: "School Lessons",
             subjects: subjects,
             cart: [],
+            checkCart: [],
             showSubject: true,
             btnDisable: true,
+            displayCart: false,
 
           order:{
             firstName: '',
@@ -190,6 +194,7 @@
 
           addToCart(subject) {
                 this.cart.push(subject.id);
+                this.checkCart.push(subject);
                
                 },
           canAddToCart(subject) {
@@ -199,6 +204,7 @@
 
           showCheckOut(){
                 this.showSubject = this.showSubject ? false : true;
+                this.displayCart = this.displayCart ? false : true;
                     
                 },
                 
@@ -224,7 +230,7 @@
         },
 
         removeItem(subject){
-          this.cart.splice(this.cart.indexOf(subject));
+          this.checkCart.splice(this.checkCart.indexOf(subject));
         },
 
         sortedSubject(){
@@ -298,7 +304,7 @@
 
         computed: {
                 cartItemCount() {
-                     return this.cart.length;
+                     return this.checkCart.length;
                      
                 }, 
                 
