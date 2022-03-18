@@ -9,6 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
    
     </head>
+    <body>
     <div id="app" v-cloak>
     <header>
         <nav class="navbar navbar-light bg-light">
@@ -18,10 +19,11 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-dark" type="submit">Search</button>
               </form>
-              <button type="button" class="btn btn-dark" v-on:click="showCheckOut">
+              <button :disabled="btnDisable" class="btn btn-dark" v-on:click="showCheckOut">
                         {{cartItemCount}}
                         <span class="fas fa-cart-plus"></span> Checkout
               </button>
+
             </div>
           </nav>
 
@@ -35,8 +37,15 @@
                   
                 </p>
               </div>
-            </div>
-            <!--<ul class="list-group">
+            </div> 
+          </div>
+        
+          <div class="b-example-divider mb-0"></div>
+
+</header>
+  
+      <div class="container">
+        <ul class="list-group">
               <p class="display-6 fw-bold text-white">Sort By</p>
 
               <li class="list-group-item">
@@ -59,15 +68,11 @@
                 Price
               </li>
 
-            </ul>-->
-          </div>
-        
-          <div class="b-example-divider mb-0"></div>
+            </ul>
 
-</header>
-  
-    <body>
-      <div v-if="showSubject"> 
+      </div>
+    
+      <div v-if='showSubject'> 
       <div v-for="subject in subjects" style="display: inline-block;">
         <div class="above">
         <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem;padding: 15px;" >
@@ -83,79 +88,37 @@
         </div>
         </div>
         </div>
-      </div>  
-     </div>
-
-      <div v-else>
-        <checkout/>
       </div> 
-  </div>
+    </div> 
 
-  <script src="https://unpkg.com/vue@3"></script>
-  <script>
-
-    let app = Vue.createApp ({
-        data(){
-          return{
-            title: "School Lessons",
-            subjects: subjects,
-            cart: [],
-            showSubject: true
-          }
-        },
-
-        methods: {
-
-           addToCart(subject) {
-                this.cart.push(subject.id);
-               
-                },
-          canAddToCart(subject) {
-                return subject.spaces > this.cartCount(subject.id);
-                    
-               },
-
-          showCheckOut: function(){
-                this.showSubject = this.showSubject ? false : true;
-                    
-                },
-                
-          cartCount(id) {
-            let count = 0;
-            for(let i = 0; i < this.cart.length; i++){
-              if (this.cart[i] === id) {
-                count++;
-              }
-            }
-            return count;
-          }
-
-
-        },
-
-        computed: {
-                cartItemCount() {
-                     return this.cart.length;
-                     
-                },
-                
-                // sortedSubjects(){
-                //   let subjectsArray = this.subjects.slice(0);
-                //   function compare(a, b) {
-                //     if(a.price > b.price)
-                //       return 1;
-                //     if(a.price < b.price)
-                //       return -1;
-                //     return 0;
-                //   }
-                //   return subjectsArray.sort(compare);
-                // }
-             }
+    <div v-else>
+      <h3 id="design">Shopping Cart</h3>
+      <div class="container">
         
-    })
+      <table class="table table-secondary">
+          
+          <thead>
+          <tr>
+            <th scope="col">Subject</th>
+            <th scope="col">Location</th>
+            <th scope="col">Price</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          <tr v-for="(subject, i) in cart" :key="i">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-dark cart-remove" v-on:click="removeItem">
+                      &times;
+                    </button></td>
+          </tr>
+        </tbody>
 
-    app.component('checkout', {
-      template: `
+      </table>
+      </div>
 
       <div class="container">
       <div class="mb-3">
@@ -187,20 +150,58 @@
       </div>
       </div>
       </div>
-      `,
+      </div> 
+     </div>
+  
 
-      data(){
-        return{
+  <script src="https://unpkg.com/vue@3"></script>
+  <script>
+
+    let app = Vue.createApp ({
+        data(){
+          return{
+            title: "School Lessons",
+            subjects: subjects,
+            cart: [],
+            showSubject: true,
+            btnDisable: true,
+
           order:{
             firstName: '',
             lastName: '',
             phone: ''
           }
+          }
+          
+        },
 
-        }
-      },
+        methods: {
 
-      methods:{
+          addToCart(subject) {
+                this.cart.push(subject.id);
+               
+                },
+          canAddToCart(subject) {
+                return subject.spaces > this.cartCount(subject.id);
+                    
+               },
+
+          showCheckOut(){
+                this.showSubject = this.showSubject ? false : true;
+                    
+                },
+                
+          cartCount(id) {
+            let count = 0;
+            for(let i = 0; i < this.cart.length; i++){
+              if (this.cart[i] === id) {
+                count++;
+                this.btnDisable = false;
+              }
+            }
+            return count;
+          },
+
         submitForm(){
           alert('Order Sucessful')
         },
@@ -209,10 +210,36 @@
           if(this.order.firstName != "" && this.order.lastName != "" && this.order.phone !=  ""){
             document.getElementById('btn').removeAttribute('disabled');
           }
+        },
+
+        removeItem(subject){
+          this.cart.splice(this.cart.indexOf(subject));
         }
-      }
-    })
-    app.mount('#app')
+        
+        },
+
+        computed: {
+                cartItemCount() {
+                     return this.cart.length;
+                     
+                }, 
+                
+                // sortedSubjects(){
+                //   let subjectsArray = this.subjects.slice(0);
+                //   function compare(a, b) {
+                //     if(a.price > b.price)
+                //       return 1;
+                //     if(a.price < b.price)
+                //       return -1;
+                //     return 0;
+                //   }
+                //   return subjectsArray.sort(compare);
+                // }
+             }
+
+            })
+        
+             app.mount('#app')
 
   </script>
     </body>
